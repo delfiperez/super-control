@@ -3,80 +3,235 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Control de Compras & Súper</title>
+  <title>🌸 Mi Súper Cute & Kawaii Control 🌸</title>
   <style>
     :root {
-      --primary: #2563eb;
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --text: #1e293b;
-      --border: #e2e8f0;
-      --accent: #16a34a;
+      --primary: #a855f7;
+      --primary-dark: #9333ea;
+      --bg: #f3e8ff;
+      --card: rgba(255, 255, 255, 0.92);
+      --text: #581c87;
+      --text-muted: #7e22ce;
+      --border: #f0abfc;
+      --accent: #ec4899;
+      --pink-soft: #fbcfe8;
     }
-    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--text); padding-bottom: 75px; }
+
+    * { 
+      box-sizing: border-box; 
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Fredoka', -apple-system, sans-serif; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    body { 
+      background-color: var(--bg);
+      background-image: radial-gradient(#e9d5ff 2px, transparent 2px), radial-gradient(#fbcfe8 2px, #f3e8ff 2px);
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
+      color: var(--text); 
+      padding-bottom: 85px; 
+      min-height: 100vh;
+    }
     
-    header { background: var(--primary); color: white; padding: 1rem; text-align: center; font-weight: bold; font-size: 1.2rem; }
+    header { 
+      background: linear-gradient(135deg, #c084fc, #f472b6); 
+      color: white; 
+      padding: 1.2rem; 
+      text-align: center; 
+      font-weight: bold; 
+      font-size: 1.3rem; 
+      box-shadow: 0 4px 15px rgba(168, 85, 247, 0.25);
+      border-bottom: 3px solid #f472b6;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.15);
+    }
     
     .container { padding: 1rem; max-width: 600px; margin: 0 auto; }
     .section { display: none; }
-    .section.active { display: block; }
+    .section.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     
-    .card { background: var(--card); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    h2 { font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--primary); }
+    .card { 
+      background: var(--card); 
+      border-radius: 20px; 
+      padding: 1.2rem; 
+      margin-bottom: 1.2rem; 
+      border: 2px solid var(--border); 
+      box-shadow: 0 8px 20px rgba(192, 132, 252, 0.15); 
+      backdrop-filter: blur(5px);
+    }
+
+    h2 { 
+      font-size: 1.15rem; 
+      margin-bottom: 0.85rem; 
+      color: var(--primary-dark); 
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
     
-    label { font-size: 0.85rem; font-weight: 600; display: block; margin-top: 0.5rem; }
-    input, select, button { width: 100%; padding: 0.75rem; margin-top: 0.25rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
-    button { background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; margin-top: 1rem; }
-    button.btn-danger { background: #dc2626; }
-    button.btn-secondary { background: #64748b; }
+    label { font-size: 0.85rem; font-weight: bold; display: block; margin-top: 0.6rem; color: var(--text-muted); }
+    
+    input, select, button { 
+      width: 100%; 
+      padding: 0.75rem; 
+      margin-top: 0.3rem; 
+      border: 2px solid #f5d0fe; 
+      border-radius: 14px; 
+      font-size: 0.95rem; 
+      outline: none;
+      transition: all 0.2s ease;
+      background: #faf5ff;
+      color: var(--text);
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+      background: #ffffff;
+    }
+
+    button { 
+      background: linear-gradient(135deg, #a855f7, #ec4899); 
+      color: white; 
+      border: none; 
+      font-weight: bold; 
+      cursor: pointer; 
+      margin-top: 1.1rem; 
+      box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
+      border-radius: 16px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(236, 72, 153, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button.btn-danger { 
+      background: linear-gradient(135deg, #f43f5e, #fb7185); 
+      box-shadow: 0 4px 10px rgba(244, 63, 94, 0.3);
+    }
+
+    button.btn-secondary { 
+      background: linear-gradient(135deg, #c084fc, #a855f7); 
+      box-shadow: 0 4px 10px rgba(192, 132, 252, 0.3);
+    }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 0.5rem; }
 
-    .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 0.5rem 0; }
-    .nav-btn { background: none; border: none; color: #64748b; font-size: 0.7rem; display: flex; flex-direction: column; align-items: center; width: auto; margin: 0; padding: 0.2rem; }
-    .nav-btn.active { color: var(--primary); font-weight: bold; }
+    .nav-bar { 
+      position: fixed; 
+      bottom: 0; 
+      left: 0; 
+      right: 0; 
+      background: rgba(255, 255, 255, 0.95); 
+      border-top: 2px solid var(--border); 
+      display: flex; 
+      justify-content: space-around; 
+      padding: 0.6rem 0; 
+      backdrop-filter: blur(10px);
+      box-shadow: 0 -4px 15px rgba(168, 85, 247, 0.15);
+      border-radius: 20px 20px 0 0;
+    }
+
+    .nav-btn { 
+      background: none; 
+      border: none; 
+      color: #a855f7; 
+      font-size: 0.75rem; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      width: auto; 
+      margin: 0; 
+      padding: 0.2rem 0.5rem; 
+      box-shadow: none;
+      font-weight: bold;
+      opacity: 0.7;
+    }
+
+    .nav-btn.active { 
+      color: #ec4899; 
+      font-weight: bold; 
+      opacity: 1;
+      transform: scale(1.08);
+    }
 
     .item-list { list-style: none; margin-top: 0.5rem; }
-    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
-    .badge { background: #e0f2fe; color: #0369a1; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; }
     
-    .stat-box { background: #f1f5f9; border-radius: 8px; padding: 0.75rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+    .item-row { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 0.6rem 0.8rem; 
+      border-bottom: 1px dashed var(--border); 
+      background: #faf5ff;
+      border-radius: 12px;
+      margin-bottom: 0.4rem;
+    }
+
+    .badge { 
+      background: #fbcfe8; 
+      color: #be185d; 
+      padding: 0.25rem 0.6rem; 
+      border-radius: 20px; 
+      font-size: 0.75rem; 
+      font-weight: bold;
+    }
+    
+    .stat-box { 
+      background: linear-gradient(135deg, #fae8ff, #f3e8ff); 
+      border: 1px solid var(--border);
+      border-radius: 14px; 
+      padding: 0.85rem 1rem; 
+      margin-bottom: 0.6rem; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+    }
   </style>
 </head>
 <body>
 
-  <header>🛒 Mi Súper Control</header>
+  <header>🌸✨ Mi Súper Control Kawaii ✨💖</header>
 
   <div class="container">
     <!-- 1. REGISTRAR COMPRA -->
     <section id="sec-registrar" class="section active">
       <div class="card">
-        <h2>📝 Nueva Orden de Compra</h2>
+        <h2>📝🌸 Nueva Orden de Compra</h2>
         <form id="form-compra">
-          <label>Supermercado</label>
+          <label>🛍️ Supermercado</label>
           <input type="text" id="super-nombre" placeholder="Ej: Carrefour, Coto" list="dl-superes" required>
           <datalist id="dl-superes"></datalist>
           
-          <label>Fecha</label>
+          <label>📅 Fecha</label>
           <input type="date" id="compra-fecha" required>
 
-          <label>Producto</label>
+          <label>🎀 Producto</label>
           <input type="text" id="prod-nombre" placeholder="Ej: leche sachet 3%" list="dl-productos" required>
           <datalist id="dl-productos"></datalist>
 
           <div class="grid-2">
             <div>
-              <label>Cantidad</label>
+              <label>🔢 Cantidad</label>
               <input type="number" id="prod-cantidad" value="1" min="1" step="1" required>
             </div>
             <div>
-              <label>Precio Unitario ($)</label>
+              <label>💵 Precio ($)</label>
               <input type="number" step="0.01" id="prod-precio" placeholder="0.00" required>
             </div>
           </div>
 
-          <button type="submit">Guardar Registro</button>
+          <button type="submit">💖 Guardar Registro 💖</button>
         </form>
       </div>
     </section>
@@ -84,15 +239,15 @@
     <!-- 2. OPTIMIZAR COMPRA -->
     <section id="sec-optimizar" class="section">
       <div class="card">
-        <h2>🎯 Armar Lista de Compra</h2>
-        <p style="font-size: 0.85rem; color: #64748b;">Seleccioná qué querés comprar para calcular el súper más económico hoy.</p>
+        <h2>🛒✨ Armar Lista Cute</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Seleccioná qué querés comprar para calcular el súper más económico hoy 🌸</p>
         
         <div id="lista-seleccion-productos" style="margin-top: 1rem;"></div>
-        <button onclick="calcularMejorOpcion()">Calcular Mejor Opción</button>
+        <button onclick="calcularMejorOpcion()">🌷 Calcular Mejor Opción 🌷</button>
       </div>
 
       <div id="resultado-optimizacion" class="card" style="display:none;">
-        <h2>💡 Resultado Recomendado</h2>
+        <h2>💡💖 Resultado Recomendado</h2>
         <div id="detalle-resultado"></div>
       </div>
     </section>
@@ -100,37 +255,37 @@
     <!-- 3. PROMOS Y DESCUENTOS -->
     <section id="sec-promos" class="section">
       <div class="card">
-        <h2>🏷️ Nueva Promoción</h2>
+        <h2>🏷️✨ Nueva Promoción</h2>
         <form id="form-promo">
-          <label>Supermercado</label>
+          <label>🛍️ Supermercado</label>
           <input type="text" id="promo-super" list="dl-superes" required>
 
-          <label>Día de la semana</label>
+          <label>🗓️ Día de la semana</label>
           <select id="promo-dia">
-            <option value="1">Lunes</option>
-            <option value="2">Martes</option>
-            <option value="3">Miércoles</option>
-            <option value="4">Jueves</option>
-            <option value="5">Viernes</option>
-            <option value="6">Sábado</option>
-            <option value="0">Domingo</option>
+            <option value="1">🌸 Lunes</option>
+            <option value="2">🌸 Martes</option>
+            <option value="3">🌸 Miércoles</option>
+            <option value="4">🌸 Jueves</option>
+            <option value="5">🌸 Viernes</option>
+            <option value="6">🌸 Sábado</option>
+            <option value="0">🌸 Domingo</option>
           </select>
 
-          <label>Medio de Pago / Banco</label>
+          <label>💳 Medio de Pago / Banco</label>
           <input type="text" id="promo-pago" placeholder="Ej: Tarjeta VISA Galicia" required>
 
-          <label>Descuento (%)</label>
+          <label>🎁 Descuento (%)</label>
           <input type="number" id="promo-desc" placeholder="Ej: 20" required>
 
-          <label>Vigencia Hasta</label>
+          <label>⏳ Vigencia Hasta</label>
           <input type="date" id="promo-hasta" required>
 
-          <button type="submit">Guardar Promo</button>
+          <button type="submit">💖 Guardar Promo 💖</button>
         </form>
       </div>
 
       <div class="card">
-        <h2>Promociones Activas</h2>
+        <h2>🌸 Promociones Activas 🌸</h2>
         <ul id="lista-promos" class="item-list"></ul>
       </div>
     </section>
@@ -138,7 +293,7 @@
     <!-- 4. GASTOS POR MES -->
     <section id="sec-gastos" class="section">
       <div class="card">
-        <h2>📊 Resumen de Gastos por Mes</h2>
+        <h2>📊💖 Gastos por Mes</h2>
         <div id="lista-gastos-mes"></div>
       </div>
     </section>
@@ -146,8 +301,8 @@
     <!-- 5. CATÁLOGO / BASE DE DATOS -->
     <section id="sec-catalogo" class="section">
       <div class="card">
-        <h2>📦 Base de Productos Registrados</h2>
-        <input type="text" id="buscar-producto" placeholder="🔍 Buscar producto..." onkeyup="renderCatalogo()">
+        <h2>📦✨ Base de Productos</h2>
+        <input type="text" id="buscar-producto" placeholder="🔍 Buscar producto cute..." onkeyup="renderCatalogo()">
         <ul id="lista-catalogo" class="item-list"></ul>
       </div>
     </section>
@@ -222,7 +377,7 @@
       
       db.compras.push(registro);
       guardarDB();
-      alert(`¡Guardado! (${cant}x $${precioUnitario.toFixed(2)} = $${totalPrecio.toFixed(2)})`);
+      alert(`¡Guardado con amor! 🌸 (${cant}x $${precioUnitario.toFixed(2)} = $${totalPrecio.toFixed(2)})`);
       
       // Reset pero mantener súper y fecha para carga rápida
       document.getElementById('prod-nombre').value = '';
@@ -263,10 +418,10 @@
         lista.innerHTML += `
           <li class="item-row">
             <div>
-              <strong>${p.super.toUpperCase()}</strong> (${diasSemana[p.dia]})<br>
-              <small>${p.pago} - <strong>${p.descuento}% OFF</strong> (Hasta ${p.hasta})</small>
+              <strong>🌸 ${p.super.toUpperCase()}</strong> (${diasSemana[p.dia]})<br>
+              <small>${p.pago} — <strong>${p.descuento}% OFF</strong> 💖 (Hasta ${p.hasta})</small>
             </div>
-            <button class="btn-danger" style="width:auto; padding: 0.3rem 0.6rem;" onclick="borrarPromo(${p.id})">X</button>
+            <button class="btn-danger" style="width:auto; padding: 0.3rem 0.6rem; border-radius:10px;" onclick="borrarPromo(${p.id})">❌</button>
           </li>
         `;
       });
@@ -288,17 +443,17 @@
 
       filtrados.slice().reverse().forEach(c => {
         const cantStr = c.cantidad && c.cantidad > 1 ? `(${c.cantidad}u)` : '';
-        const unitarioStr = c.cantidad && c.cantidad > 1 ? `<small style="color:#64748b;"> ($${(c.precio/c.cantidad).toFixed(2)} c/u)</small>` : '';
+        const unitarioStr = c.cantidad && c.cantidad > 1 ? `<small style="color:var(--text-muted);"> ($${(c.precio/c.cantidad).toFixed(2)} c/u)</small>` : '';
 
         lista.innerHTML += `
           <li class="item-row">
             <div>
-              <strong>${c.producto}</strong> ${cantStr} <span class="badge">${c.super}</span><br>
+              <strong>✨ ${c.producto}</strong> ${cantStr} <span class="badge">${c.super}</span><br>
               <small><strong>$${c.precio.toFixed(2)}</strong></small>${unitarioStr} — <small>${c.fecha}</small>
             </div>
-            <div style="display:flex; gap:0.25rem;">
-              <button class="btn-secondary" style="width:auto; padding:0.3rem 0.5rem;" onclick="editarPrecio(${c.id})">✏️</button>
-              <button class="btn-danger" style="width:auto; padding:0.3rem 0.5rem;" onclick="borrarRegistro(${c.id})">🗑️</button>
+            <div style="display:flex; gap:0.3rem;">
+              <button class="btn-secondary" style="width:auto; padding:0.3rem 0.5rem; border-radius:10px;" onclick="editarPrecio(${c.id})">✏️</button>
+              <button class="btn-danger" style="width:auto; padding:0.3rem 0.5rem; border-radius:10px;" onclick="borrarRegistro(${c.id})">🗑️</button>
             </div>
           </li>
         `;
@@ -330,7 +485,7 @@
       contenedor.innerHTML = '';
 
       if (db.compras.length === 0) {
-        contenedor.innerHTML = '<p style="color:#64748b;">Aún no hay compras registradas.</p>';
+        contenedor.innerHTML = '<p style="color:var(--text-muted);">Aún no hay compras registradas 🌸</p>';
         return;
       }
 
@@ -354,8 +509,8 @@
 
         contenedor.innerHTML += `
           <div class="stat-box">
-            <span><strong>${nombreMes}</strong></span>
-            <span style="font-size: 1.1rem; font-weight: bold; color: var(--primary);">$${gastosMes[m].toFixed(2)}</span>
+            <span><strong>🌸 ${nombreMes}</strong></span>
+            <span style="font-size: 1.15rem; font-weight: bold; color: var(--primary-dark);">$${gastosMes[m].toFixed(2)}</span>
           </div>
         `;
       });
@@ -369,14 +524,14 @@
       const productosUnicos = [...new Set(db.compras.map(c => c.producto))];
 
       if(productosUnicos.length === 0) {
-        contenedor.innerHTML = '<p>No hay productos registrados aún.</p>';
+        contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay productos registrados aún 🌷</p>';
         return;
       }
 
       productosUnicos.forEach(prod => {
         contenedor.innerHTML += `
-          <label style="display:flex; align-items:center; gap:0.5rem; margin-top:0.5rem;">
-            <input type="checkbox" value="${prod}" class="chk-prod" style="width:auto;"> ${prod}
+          <label style="display:flex; align-items:center; gap:0.6rem; margin-top:0.5rem; font-weight:normal; color:var(--text);">
+            <input type="checkbox" value="${prod}" class="chk-prod" style="width:auto;"> ✨ ${prod}
           </label>
         `;
       });
@@ -384,7 +539,7 @@
 
     function calcularMejorOpcion() {
       const seleccionados = Array.from(document.querySelectorAll('.chk-prod:checked')).map(cb => cb.value);
-      if(seleccionados.length === 0) return alert('Seleccioná al menos un producto');
+      if(seleccionados.length === 0) return alert('Seleccioná al menos un producto 🌸');
 
       const hoy = new Date();
       const diaHoy = hoy.getDay();
@@ -423,11 +578,11 @@
 
         const promoSuper = promosHoy.find(p => p.super === superNombre);
         let totalConDescuento = total;
-        let infoPromo = "Sin promo hoy";
+        let infoPromo = "Sin promo hoy 🌸";
 
         if(promoSuper) {
           totalConDescuento = total * (1 - promoSuper.descuento / 100);
-          infoPromo = `${promoSuper.descuento}% OFF pagando con ${promoSuper.pago}`;
+          infoPromo = `${promoSuper.descuento}% OFF pagando con ${promoSuper.pago} 💖`;
         }
 
         resultados.push({
@@ -446,13 +601,13 @@
 
       resultados.forEach((r, idx) => {
         divRes.innerHTML += `
-          <div style="border-bottom: 1px solid #e2e8f0; padding: 0.5rem 0;">
-            <p style="font-weight:bold; color:${idx===0?'#16a34a':'#1e293b'}">
-              ${idx === 0 ? '🏆 Mejor Opción: ' : ''}${r.super.toUpperCase()}
+          <div style="border-bottom: 1px dashed #f0abfc; padding: 0.6rem 0;">
+            <p style="font-weight:bold; color:${idx===0?'#ec4899':'#581c87'}">
+              ${idx === 0 ? '🏆 Mejor Opción: ' : '🌸 '}${r.super.toUpperCase()}
             </p>
-            <p>Estimado (1u c/u): <strong>$${r.totalFinal.toFixed(2)}</strong> <small>(Base: $${r.totalOriginal.toFixed(2)})</small></p>
-            <p style="font-size:0.8rem; color:#64748b;">Promo: ${r.promocion}</p>
-            <p style="font-size:0.8rem; color:#64748b;">Tiene ${r.cubiertos} de ${seleccionados.length} productos seleccionados.</p>
+            <p style="margin-top:0.2rem;">Estimado (1u c/u): <strong>$${r.totalFinal.toFixed(2)}</strong> <small style="color:var(--text-muted);">(Base: $${r.totalOriginal.toFixed(2)})</small></p>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.1rem;">Promo: ${r.promocion}</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Tiene ${r.cubiertos} de ${seleccionados.length} productos seleccionados.</p>
           </div>
         `;
       });
@@ -462,4 +617,3 @@
   </script>
 </body>
 </html>
- 
