@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🌸 Mi Súper Cute & Kawaii Control 🌸</title>
+  <title>🌸 Mi Súper Control Kawaii 🌸</title>
   <style>
     :root {
       --primary: #a855f7;
@@ -37,13 +37,23 @@
     header { 
       background: linear-gradient(135deg, #c084fc, #f472b6); 
       color: white; 
-      padding: 1.2rem; 
+      padding: 1rem; 
       text-align: center; 
       font-weight: bold; 
-      font-size: 1.3rem; 
+      font-size: 1.2rem; 
       box-shadow: 0 4px 15px rgba(168, 85, 247, 0.25);
       border-bottom: 3px solid #f472b6;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .profile-badge {
+      background: rgba(255, 255, 255, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
     }
     
     .container { padding: 1rem; max-width: 600px; margin: 0 auto; }
@@ -104,15 +114,6 @@
       margin-top: 1.1rem; 
       box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
       border-radius: 16px;
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 14px rgba(236, 72, 153, 0.4);
-    }
-
-    button:active {
-      transform: translateY(0);
     }
 
     button.btn-danger { 
@@ -186,6 +187,14 @@
       font-size: 0.75rem; 
       font-weight: bold;
     }
+
+    .badge-user {
+      background: #e9d5ff;
+      color: #6b21a8;
+      padding: 0.2rem 0.5rem;
+      border-radius: 10px;
+      font-size: 0.7rem;
+    }
     
     .stat-box { 
       background: linear-gradient(135deg, #fae8ff, #f3e8ff); 
@@ -197,11 +206,42 @@
       justify-content: space-between; 
       align-items: center; 
     }
+
+    /* Modal Perfil */
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(88, 28, 135, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
   </style>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
-  <header>🌸✨ Mi Súper Control Kawaii ✨💖</header>
+  <!-- MODAL DE SELECCIÓN DE PERFIL -->
+  <div id="modal-perfil" class="modal">
+    <div class="card" style="width: 85%; max-width: 380px; text-align: center;">
+      <h2>🌸 ¿Quién sos? 💖</h2>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Seleccioná tu perfil para cargar o consultar compras:</p>
+      <button onclick="seleccionarPerfil('Delfi')" style="margin-top: 0.5rem;">👑 Delfi</button>
+      <button onclick="seleccionarPerfil('Abru')" style="margin-top: 0.5rem; background: linear-gradient(135deg, #f472b6, #ec4899);">👑 Abru</button>
+      <input type="text" id="nuevo-perfil-nombre" placeholder="Otro perfil..." style="margin-top: 1rem;">
+      <button onclick="crearPerfilPersonalizado()" class="btn-secondary" style="margin-top: 0.5rem;">✨ Ingresar</button>
+    </div>
+  </div>
+
+  <header>
+    <span>🌸✨ Súper Kawaii</span>
+    <div id="perfil-actual-display" class="profile-badge" onclick="cambiarPerfilModal()">👤 Perfil</div>
+  </header>
 
   <div class="container">
     <!-- 1. REGISTRAR COMPRA -->
@@ -226,7 +266,7 @@
               <input type="number" id="prod-cantidad" value="1" min="1" step="1" required>
             </div>
             <div>
-              <label>💵 Precio ($)</label>
+              <label>💵 Precio Total ($)</label>
               <input type="number" step="0.01" id="prod-precio" placeholder="0.00" required>
             </div>
           </div>
@@ -240,7 +280,7 @@
     <section id="sec-optimizar" class="section">
       <div class="card">
         <h2>🛒✨ Armar Lista Cute</h2>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Seleccioná qué querés comprar para calcular el súper más económico hoy 🌸</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Seleccioná qué querés comprar para calcular el súper más económico con los precios globales 🌸</p>
         
         <div id="lista-seleccion-productos" style="margin-top: 1rem;"></div>
         <button onclick="calcularMejorOpcion()">🌷 Calcular Mejor Opción 🌷</button>
@@ -285,7 +325,7 @@
       </div>
 
       <div class="card">
-        <h2>🌸 Promociones Activas 🌸</h2>
+        <h2>🌸 Promociones Compartidas 🌸</h2>
         <ul id="lista-promos" class="item-list"></ul>
       </div>
     </section>
@@ -293,15 +333,16 @@
     <!-- 4. GASTOS POR MES -->
     <section id="sec-gastos" class="section">
       <div class="card">
-        <h2>📊💖 Gastos por Mes</h2>
+        <h2>📊💖 Gastos Mensuales de <span id="gastos-usuario-titulo"></span></h2>
         <div id="lista-gastos-mes"></div>
       </div>
     </section>
 
-    <!-- 5. CATÁLOGO / BASE DE DATOS -->
+    <!-- 5. CATÁLOGO GLOBAL -->
     <section id="sec-catalogo" class="section">
       <div class="card">
-        <h2>📦✨ Base de Productos</h2>
+        <h2>📦✨ Base Global de Productos</h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom:0.5rem;">Precios cargados por todos los perfiles 🌸</p>
         <input type="text" id="buscar-producto" placeholder="🔍 Buscar producto cute..." onkeyup="renderCatalogo()">
         <ul id="lista-catalogo" class="item-list"></ul>
       </div>
@@ -318,35 +359,90 @@
   </nav>
 
   <script>
-    // Base de Datos Local
-    let db = {
-      compras: JSON.parse(localStorage.getItem('db_compras')) || [],
-      promos: JSON.parse(localStorage.getItem('db_promos')) || []
-    };
+    // CLAVES DE FIREBASE
+    const firebaseConfig = {
+      apiKey: "AIzaSyDo8D0SNi93qxYiGUA7UieZTHgPEGrte1c",
+      authDomain: "super-cute-46e06.firebaseapp.com",
+      projectId: "super-cute-46e06",
+      storageBucket: "super-cute-46e06.firebasestorage.app",
+      messagingSenderId: "733637531361",
+      appId: "1:733637531361:web:5f793b8089aa8bf5b149a0",
+      measurementId: "G-0ZZNC5YP8Z"
+    }; 
 
-    function guardarDB() {
-      localStorage.setItem('db_compras', JSON.stringify(db.compras));
-      localStorage.setItem('db_promos', JSON.stringify(db.promos));
-      actualizarDataLists();
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let perfilActual = localStorage.getItem('perfil_usuario') || '';
+    let globalCompras = [];
+    let globalPromos = [];
+
+    document.getElementById('compra-fecha').value = new Date().toISOString().substring(0, 10);
+
+    if (perfilActual) {
+      document.getElementById('modal-perfil').style.display = 'none';
+      actualizarDisplayPerfil();
     }
 
-    // Setear fecha de hoy por defecto
-    document.getElementById('compra-fecha').value = new Date().toISOString().substring(0, 10);
+    function seleccionarPerfil(nombre) {
+      perfilActual = nombre;
+      localStorage.setItem('perfil_usuario', nombre);
+      document.getElementById('modal-perfil').style.display = 'none';
+      actualizarDisplayPerfil();
+      renderGastosPorMes();
+    }
+
+    function crearPerfilPersonalizado() {
+      const nom = document.getElementById('nuevo-perfil-nombre').value.trim();
+      if (nom) seleccionarPerfil(nom);
+    }
+
+    function cambiarPerfilModal() {
+      document.getElementById('modal-perfil').style.display = 'flex';
+    }
+
+    function actualizarDisplayPerfil() {
+      document.getElementById('perfil-actual-display').innerText = `👤 ${perfilActual}`;
+      document.getElementById('gastos-usuario-titulo').innerText = perfilActual;
+    }
+
+    // Escuchar cambios en la base de datos de Firebase en tiempo real
+    db.ref('compras').on('value', (snapshot) => {
+      const data = snapshot.val();
+      globalCompras = [];
+      if (data) {
+        Object.keys(data).forEach(key => {
+          globalCompras.push({ id: key, ...data[key] });
+        });
+      }
+      actualizarDataLists();
+      if (document.getElementById('sec-catalogo').classList.contains('active')) renderCatalogo();
+      if (document.getElementById('sec-gastos').classList.contains('active')) renderGastosPorMes();
+    });
+
+    db.ref('promos').on('value', (snapshot) => {
+      const data = snapshot.val();
+      globalPromos = [];
+      if (data) {
+        Object.keys(data).forEach(key => {
+          globalPromos.push({ id: key, ...data[key] });
+        });
+      }
+      if (document.getElementById('sec-promos').classList.contains('active')) renderPromos();
+    });
 
     function actualizarDataLists() {
       const dlProds = document.getElementById('dl-productos');
       const dlSuperes = document.getElementById('dl-superes');
       
-      const productosUnicos = [...new Set(db.compras.map(c => c.producto))];
-      const superesUnicos = [...new Set(db.compras.map(c => c.super))];
+      const productosUnicos = [...new Set(globalCompras.map(c => c.producto))];
+      const superesUnicos = [...new Set(globalCompras.map(c => c.super))];
 
       dlProds.innerHTML = productosUnicos.map(p => `<option value="${p}">`).join('');
       dlSuperes.innerHTML = superesUnicos.map(s => `<option value="${s}">`).join('');
     }
 
-    actualizarDataLists();
-
-    // Navegación
     function cambiarSeccion(secId, btn) {
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -359,38 +455,37 @@
       if(secId === 'sec-gastos') renderGastosPorMes();
     }
 
-    // Guardar Compra
+    // Guardar Compra en Firebase
     document.getElementById('form-compra').addEventListener('submit', (e) => {
       e.preventDefault();
+      if (!perfilActual) return cambiarPerfilModal();
+
       const cant = parseInt(document.getElementById('prod-cantidad').value) || 1;
-      const precioUnitario = parseFloat(document.getElementById('prod-precio').value);
-      const totalPrecio = precioUnitario * cant;
+      const precioTotal = parseFloat(document.getElementById('prod-precio').value);
 
       const registro = {
-        id: Date.now(),
+        usuario: perfilActual,
         super: document.getElementById('super-nombre').value.trim().toLowerCase(),
         fecha: document.getElementById('compra-fecha').value,
         producto: document.getElementById('prod-nombre').value.trim().toLowerCase(),
-        precio: totalPrecio,
+        precio: precioTotal,
         cantidad: cant
       };
       
-      db.compras.push(registro);
-      guardarDB();
-      alert(`¡Guardado con amor! 🌸 (${cant}x $${precioUnitario.toFixed(2)} = $${totalPrecio.toFixed(2)})`);
+      db.ref('compras').push(registro);
+      alert(`¡Guardado por ${perfilActual}! 🌸`);
       
-      // Reset pero mantener súper y fecha para carga rápida
       document.getElementById('prod-nombre').value = '';
       document.getElementById('prod-precio').value = '';
       document.getElementById('prod-cantidad').value = '1';
       document.getElementById('prod-nombre').focus();
     });
 
-    // Guardar Promo
+    // Guardar Promo en Firebase
     document.getElementById('form-promo').addEventListener('submit', (e) => {
       e.preventDefault();
       const promo = {
-        id: Date.now(),
+        usuario: perfilActual,
         super: document.getElementById('promo-super').value.trim().toLowerCase(),
         dia: parseInt(document.getElementById('promo-dia').value),
         pago: document.getElementById('promo-pago').value,
@@ -398,9 +493,7 @@
         hasta: document.getElementById('promo-hasta').value
       };
       
-      db.promos.push(promo);
-      guardarDB();
-      renderPromos();
+      db.ref('promos').push(promo);
       e.target.reset();
     });
 
@@ -408,38 +501,34 @@
       const lista = document.getElementById('lista-promos');
       lista.innerHTML = '';
       const hoy = new Date().toISOString().substring(0, 10);
-      
-      db.promos = db.promos.filter(p => p.hasta >= hoy);
-      guardarDB();
-
       const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
-      db.promos.forEach(p => {
+      globalPromos.filter(p => p.hasta >= hoy).forEach(p => {
         lista.innerHTML += `
           <li class="item-row">
             <div>
               <strong>🌸 ${p.super.toUpperCase()}</strong> (${diasSemana[p.dia]})<br>
-              <small>${p.pago} — <strong>${p.descuento}% OFF</strong> 💖 (Hasta ${p.hasta})</small>
+              <small>${p.pago} — <strong>${p.descuento}% OFF</strong> 💖</small><br>
+              <span class="badge-user">Por ${p.usuario}</span>
             </div>
-            <button class="btn-danger" style="width:auto; padding: 0.3rem 0.6rem; border-radius:10px;" onclick="borrarPromo(${p.id})">❌</button>
+            <button class="btn-danger" style="width:auto; padding: 0.3rem 0.6rem; border-radius:10px;" onclick="borrarPromo('${p.id}')">❌</button>
           </li>
         `;
       });
     }
 
     function borrarPromo(id) {
-      db.promos = db.promos.filter(p => p.id !== id);
-      guardarDB();
-      renderPromos();
+      if(confirm('¿Eliminar esta promo compartida?')) {
+        db.ref('promos/' + id).remove();
+      }
     }
 
-    // Catálogo y Edición
     function renderCatalogo() {
       const lista = document.getElementById('lista-catalogo');
       const busqueda = document.getElementById('buscar-producto').value.toLowerCase();
       lista.innerHTML = '';
 
-      const filtrados = db.compras.filter(c => c.producto.includes(busqueda));
+      const filtrados = globalCompras.filter(c => c.producto.includes(busqueda));
 
       filtrados.slice().reverse().forEach(c => {
         const cantStr = c.cantidad && c.cantidad > 1 ? `(${c.cantidad}u)` : '';
@@ -449,58 +538,54 @@
           <li class="item-row">
             <div>
               <strong>✨ ${c.producto}</strong> ${cantStr} <span class="badge">${c.super}</span><br>
-              <small><strong>$${c.precio.toFixed(2)}</strong></small>${unitarioStr} — <small>${c.fecha}</small>
+              <small><strong>$${c.precio.toFixed(2)}</strong></small>${unitarioStr} — <small>${c.fecha}</small><br>
+              <span class="badge-user">Por ${c.usuario}</span>
             </div>
             <div style="display:flex; gap:0.3rem;">
-              <button class="btn-secondary" style="width:auto; padding:0.3rem 0.5rem; border-radius:10px;" onclick="editarPrecio(${c.id})">✏️</button>
-              <button class="btn-danger" style="width:auto; padding:0.3rem 0.5rem; border-radius:10px;" onclick="borrarRegistro(${c.id})">🗑️</button>
+              <button class="btn-secondary" style="width:auto; padding:0.3rem 0.5rem; border-radius:10px;" onclick="editarPrecio('${c.id}', ${c.precio}, '${c.producto}', '${c.super}')">✏️</button>
+              <button class="btn-danger" style="width:auto; padding:0.3rem 0.5rem; border-radius:10px;" onclick="borrarRegistro('${c.id}')">🗑️</button>
             </div>
           </li>
         `;
       });
     }
 
-    function editarPrecio(id) {
-      const item = db.compras.find(c => c.id === id);
-      const nuevoPrecio = prompt(`Nuevo precio TOTAL pagado por ${item.producto} en ${item.super}:`, item.precio);
+    function editarPrecio(id, precioActual, prod, superNombre) {
+      const nuevoPrecio = prompt(`Nuevo precio TOTAL para ${prod} en ${superNombre}:`, precioActual);
       if(nuevoPrecio && !isNaN(nuevoPrecio)) {
-        item.precio = parseFloat(nuevoPrecio);
-        item.fecha = new Date().toISOString().substring(0, 10);
-        guardarDB();
-        renderCatalogo();
+        db.ref('compras/' + id).update({
+          precio: parseFloat(nuevoPrecio),
+          fecha: new Date().toISOString().substring(0, 10)
+        });
       }
     }
 
     function borrarRegistro(id) {
-      if(confirm('¿Eliminar este registro de la base de datos?')) {
-        db.compras = db.compras.filter(c => c.id !== id);
-        guardarDB();
-        renderCatalogo();
+      if(confirm('¿Eliminar este registro de la base de datos global?')) {
+        db.ref('compras/' + id).remove();
       }
     }
 
-    // Reporte de Gastos por Mes
     function renderGastosPorMes() {
       const contenedor = document.getElementById('lista-gastos-mes');
       contenedor.innerHTML = '';
 
-      if (db.compras.length === 0) {
-        contenedor.innerHTML = '<p style="color:var(--text-muted);">Aún no hay compras registradas 🌸</p>';
+      // Filtrar compras para mostrar únicamente las del usuario actual
+      const comprasUsuario = globalCompras.filter(c => c.usuario === perfilActual);
+
+      if (comprasUsuario.length === 0) {
+        contenedor.innerHTML = `<p style="color:var(--text-muted);">Aún no hay compras registradas para ${perfilActual} 🌸</p>`;
         return;
       }
 
-      // Agrupar por YYYY-MM
       let gastosMes = {};
-
-      db.compras.forEach(c => {
+      comprasUsuario.forEach(c => {
         const mesKey = c.fecha ? c.fecha.substring(0, 7) : 'Sin Fecha';
         if (!gastosMes[mesKey]) gastosMes[mesKey] = 0;
         gastosMes[mesKey] += c.precio;
       });
 
-      // Ordenar meses de más reciente a más antiguo
       const mesesOrdenados = Object.keys(gastosMes).sort().reverse();
-
       const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
       mesesOrdenados.forEach(m => {
@@ -516,12 +601,11 @@
       });
     }
 
-    // Algoritmo de Optimización de Compras
     function cargarSelectorOptimizacion() {
       const contenedor = document.getElementById('lista-seleccion-productos');
       contenedor.innerHTML = '';
       
-      const productosUnicos = [...new Set(db.compras.map(c => c.producto))];
+      const productosUnicos = [...new Set(globalCompras.map(c => c.producto))];
 
       if(productosUnicos.length === 0) {
         contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay productos registrados aún 🌷</p>';
@@ -545,13 +629,12 @@
       const diaHoy = hoy.getDay();
       const fechaHoyStr = hoy.toISOString().substring(0, 10);
 
-      const promosHoy = db.promos.filter(p => p.dia === diaHoy && p.hasta >= fechaHoyStr);
+      const promosHoy = globalPromos.filter(p => p.dia === diaHoy && p.hasta >= fechaHoyStr);
 
       let opciones = {};
 
       seleccionados.forEach(prod => {
-        const registros = db.compras.filter(c => c.producto === prod);
-        
+        const registros = globalCompras.filter(c => c.producto === prod);
         registros.forEach(reg => {
           if(!opciones[reg.super]) opciones[reg.super] = { totalBase: 0, faltantes: 0, items: [] };
         });
@@ -564,8 +647,7 @@
         let count = 0;
 
         seleccionados.forEach(prod => {
-          // Obtener el precio unitario más reciente
-          const reg = db.compras
+          const reg = globalCompras
             .filter(c => c.producto === prod && c.super === superNombre)
             .sort((a,b) => new Date(b.fecha) - new Date(a.fecha))[0];
 
