@@ -9,7 +9,7 @@
       --primary: #a855f7;
       --primary-dark: #9333ea;
       --bg: #f3e8ff;
-      --card: rgba(255, 255, 255, 0.92);
+      --card: rgba(255, 255, 255, 0.94);
       --text: #581c87;
       --text-muted: #7e22ce;
       --border: #f0abfc;
@@ -17,18 +17,12 @@
       --pink-soft: #fbcfe8;
     }
 
-    * { 
-      box-sizing: border-box; 
-      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Fredoka', -apple-system, sans-serif; 
-      margin: 0; 
-      padding: 0; 
-    }
+    * { box-sizing: border-box; font-family: 'Comic Sans MS', 'Chalkboard SE', 'Fredoka', -apple-system, sans-serif; margin: 0; padding: 0; }
 
     body { 
       background-color: var(--bg);
       background-image: radial-gradient(#e9d5ff 2px, transparent 2px), radial-gradient(#fbcfe8 2px, #f3e8ff 2px);
       background-size: 40px 40px;
-      background-position: 0 0, 20px 20px;
       color: var(--text); 
       padding-bottom: 85px; 
       min-height: 100vh;
@@ -48,22 +42,12 @@
       align-items: center;
     }
 
-    .profile-badge {
-      background: rgba(255, 255, 255, 0.3);
-      padding: 0.2rem 0.6rem;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-    
+    .profile-badge { background: rgba(255, 255, 255, 0.3); padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.85rem; cursor: pointer; }
     .container { padding: 1rem; max-width: 600px; margin: 0 auto; }
     .section { display: none; }
     .section.active { display: block; animation: fadeIn 0.3s ease-in-out; }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     
     .card { 
       background: var(--card); 
@@ -75,15 +59,7 @@
       backdrop-filter: blur(5px);
     }
 
-    h2 { 
-      font-size: 1.15rem; 
-      margin-bottom: 0.85rem; 
-      color: var(--primary-dark); 
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-    
+    h2 { font-size: 1.15rem; margin-bottom: 0.85rem; color: var(--primary-dark); display: flex; align-items: center; gap: 0.4rem; }
     label { font-size: 0.85rem; font-weight: bold; display: block; margin-top: 0.6rem; color: var(--text-muted); }
     
     input, select, button { 
@@ -99,11 +75,7 @@
       color: var(--text);
     }
 
-    input:focus, select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
-      background: #ffffff;
-    }
+    input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(168, 85, 247, 0.3); background: #ffffff; }
 
     button { 
       background: linear-gradient(135deg, #a855f7, #ec4899); 
@@ -116,27 +88,16 @@
       border-radius: 16px;
     }
 
-    button.btn-danger { 
-      background: linear-gradient(135deg, #f43f5e, #fb7185); 
-      box-shadow: 0 4px 10px rgba(244, 63, 94, 0.3);
-    }
-
-    button.btn-secondary { 
-      background: linear-gradient(135deg, #c084fc, #a855f7); 
-      box-shadow: 0 4px 10px rgba(192, 132, 252, 0.3);
-    }
+    button.btn-danger { background: linear-gradient(135deg, #f43f5e, #fb7185); box-shadow: 0 4px 10px rgba(244, 63, 94, 0.3); }
+    button.btn-secondary { background: linear-gradient(135deg, #c084fc, #a855f7); box-shadow: 0 4px 10px rgba(192, 132, 252, 0.3); }
 
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.4rem; }
 
     .nav-bar { 
-      position: fixed; 
-      bottom: 0; 
-      left: 0; 
-      right: 0; 
+      position: fixed; bottom: 0; left: 0; right: 0; 
       background: rgba(255, 255, 255, 0.95); 
       border-top: 2px solid var(--border); 
-      display: flex; 
-      justify-content: space-around; 
+      display: flex; justify-content: space-around; 
       padding: 0.6rem 0; 
       backdrop-filter: blur(10px);
       box-shadow: 0 -4px 15px rgba(168, 85, 247, 0.15);
@@ -144,91 +105,46 @@
     }
 
     .nav-btn { 
-      background: none; 
-      border: none; 
-      color: #a855f7; 
-      font-size: 0.75rem; 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      width: auto; 
-      margin: 0; 
-      padding: 0.2rem 0.5rem; 
-      box-shadow: none;
-      font-weight: bold;
-      opacity: 0.7;
+      background: none; border: none; color: #a855f7; font-size: 0.75rem; 
+      display: flex; flex-direction: column; align-items: center; 
+      width: auto; margin: 0; padding: 0.2rem 0.5rem; box-shadow: none; font-weight: bold; opacity: 0.7;
     }
 
-    .nav-btn.active { 
-      color: #ec4899; 
-      font-weight: bold; 
-      opacity: 1;
-      transform: scale(1.08);
-    }
+    .nav-btn.active { color: #ec4899; font-weight: bold; opacity: 1; transform: scale(1.08); }
 
     .item-list { list-style: none; margin-top: 0.5rem; } 
     
     .item-row { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      padding: 0.6rem 0.8rem; 
+      padding: 0.8rem; 
       border-bottom: 1px dashed var(--border); 
       background: #faf5ff;
-      border-radius: 12px;
-      margin-bottom: 0.4rem;
+      border-radius: 14px;
+      margin-bottom: 0.6rem;
     }
 
-    .badge { 
-      background: #fbcfe8; 
-      color: #be185d; 
-      padding: 0.2rem 0.5rem; 
-      border-radius: 20px; 
-      font-size: 0.75rem; 
-      font-weight: bold;
-    }
-
-    .badge-ref {
-      background: #fed7aa;
-      color: #c2410c;
-      padding: 0.2rem 0.5rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: bold;
-    }
-
-    .badge-user {
-      background: #e9d5ff;
-      color: #6b21a8;
-      padding: 0.2rem 0.5rem;
-      border-radius: 10px;
-      font-size: 0.7rem;
-    }
+    .badge { background: #fbcfe8; color: #be185d; padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+    .badge-ref { background: #fed7aa; color: #c2410c; padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+    .badge-user { background: #e9d5ff; color: #6b21a8; padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.7rem; }
+    .badge-alert { background: #fef08a; color: #854d0e; padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.75rem; font-weight: bold; }
     
     .stat-box { 
       background: linear-gradient(135deg, #fae8ff, #f3e8ff); 
-      border: 1px solid var(--border);
-      border-radius: 14px; 
-      padding: 0.85rem 1rem; 
-      margin-bottom: 0.6rem; 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
+      border: 1px solid var(--border); border-radius: 14px; 
+      padding: 0.85rem 1rem; margin-bottom: 0.6rem; 
+      display: flex; justify-content: space-between; align-items: center; 
     }
 
     .modal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(88, 28, 135, 0.6);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(88, 28, 135, 0.6); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center; z-index: 1000;
     }
+
+    .price-table { width: 100%; margin-top: 0.5rem; border-collapse: collapse; font-size: 0.85rem; }
+    .price-table th, .price-table td { padding: 0.4rem; text-align: left; border-bottom: 1px solid #f0abfc; }
+    .price-table th { color: var(--primary-dark); }
   </style>
 
-  <!-- Librerías de Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
@@ -238,11 +154,53 @@
   <div id="modal-perfil" class="modal">
     <div class="card" style="width: 85%; max-width: 380px; text-align: center;">
       <h2>🌸 ¿Quién sos? 💖</h2>
-      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Seleccioná tu perfil para cargar o consultar compras:</p>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Seleccioná tu perfil para operar:</p>
       <button onclick="seleccionarPerfil('Delfi')" style="margin-top: 0.5rem;">👑 Delfi</button>
       <button onclick="seleccionarPerfil('Abru')" style="margin-top: 0.5rem; background: linear-gradient(135deg, #f472b6, #ec4899);">👑 Abru</button>
       <input type="text" id="nuevo-perfil-nombre" placeholder="Otro perfil..." style="margin-top: 1rem;">
       <button onclick="crearPerfilPersonalizado()" class="btn-secondary" style="margin-top: 0.5rem;">✨ Ingresar</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE EDICIÓN DE REGISTRO COMPLETO -->
+  <div id="modal-editar" class="modal" style="display:none;">
+    <div class="card" style="width: 90%; max-width: 450px;">
+      <h2>✏️ Modificar Producto</h2>
+      <input type="hidden" id="edit-id">
+      
+      <label>📌 Tipo de Registro</label>
+      <select id="edit-tipo">
+        <option value="compra">🛍️ Compra realizada</option>
+        <option value="referencia">👀 Precio de Referencia</option>
+      </select>
+
+      <label>🏪 Comercio / Supermercado</label>
+      <input type="text" id="edit-super" required>
+
+      <label>🎀 Producto</label>
+      <input type="text" id="edit-producto" required>
+
+      <div class="grid-3">
+        <div>
+          <label>📐 Unidad</label>
+          <select id="edit-unidad">
+            <option value="unidades">Unid.</option>
+            <option value="gramos">Gramos</option>
+            <option value="kilos">Kilos</option>
+          </select>
+        </div>
+        <div>
+          <label>🔢 Cant.</label>
+          <input type="number" id="edit-cantidad" step="any" required>
+        </div>
+        <div>
+          <label>💵 Total ($)</label>
+          <input type="number" step="0.01" id="edit-precio" required>
+        </div>
+      </div>
+
+      <button onclick="guardarEdicionCompleta()">💾 Guardar Cambios</button>
+      <button onclick="cerrarModalEditar()" class="btn-secondary" style="margin-top:0.4rem;">Cancelar</button>
     </div>
   </div>
 
@@ -264,7 +222,7 @@
           </select>
 
           <label>🏪 Comercio / Supermercado</label>
-          <input type="text" id="super-nombre" placeholder="Ej: Carrefour, Verdulería Don Pepe" list="dl-superes" required>
+          <input type="text" id="super-nombre" placeholder="Ej: Carrefour, Coto, Don Pepe" list="dl-superes" required>
           <datalist id="dl-superes"></datalist>
           
           <label>📅 Fecha</label>
@@ -277,14 +235,14 @@
           <div class="grid-3">
             <div>
               <label>📐 Unidad</label>
-              <select id="prod-unidad" onchange="actualizarPlaceholderCantidad()">
+              <select id="prod-unidad">
                 <option value="unidades">Unid.</option>
                 <option value="gramos">Gramos (gr)</option>
                 <option value="kilos">Kilos (kg)</option>
               </select>
             </div>
             <div>
-              <label id="label-cantidad">🔢 Cant.</label>
+              <label>🔢 Cant.</label>
               <input type="number" id="prod-cantidad" value="1" min="0.01" step="any" required placeholder="Ej: 1">
             </div>
             <div>
@@ -298,18 +256,31 @@
       </div>
     </section>
 
-    <!-- 2. OPTIMIZAR COMPRA -->
+    <!-- 2. PLANIFICAR COMPRA -->
     <section id="sec-optimizar" class="section">
       <div class="card">
-        <h2>🛒✨ Armar Lista Cute</h2>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Seleccioná qué querés comprar para calcular el súper o comercio más económico con precios estándar (Unidad o Kg) 🌸</p>
+        <h2>🛒✨ Planificador Semanal</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Seleccioná qué necesitás y qué día pensás ir de compras para calcular la opción más barata con promos 🌸</p>
         
-        <div id="lista-seleccion-productos" style="margin-top: 1rem;"></div>
-        <button onclick="calcularMejorOpcion()">🌷 Calcular Mejor Opción 🌷</button>
+        <label>🗓️ ¿Qué día vas a hacer la compra?</label>
+        <select id="plan-dia-semana" onchange="calcularMejorOpcion()">
+          <option value="auto">✨ Buscar el MEJOR día de la semana</option>
+          <option value="1">🌸 Lunes</option>
+          <option value="2">🌸 Martes</option>
+          <option value="3">🌸 Miércoles</option>
+          <option value="4">🌸 Jueves</option>
+          <option value="5">🌸 Viernes</option>
+          <option value="6">🌸 Sábado</option>
+          <option value="0">🌸 Domingo</option>
+        </select>
+
+        <label style="margin-top:1rem;">🛍️ Productos a Planificar:</label>
+        <div id="lista-seleccion-productos" style="margin-top: 0.5rem;"></div>
+        <button onclick="calcularMejorOpcion()">🌷 Planificar Mi Compra 🌷</button>
       </div>
 
       <div id="resultado-optimizacion" class="card" style="display:none;">
-        <h2>💡💖 Resultado Recomendado</h2>
+        <h2>💡💖 Comparativa de Comercios</h2>
         <div id="detalle-resultado"></div>
       </div>
     </section>
@@ -356,17 +327,17 @@
     <section id="sec-gastos" class="section">
       <div class="card">
         <h2>📊💖 Gastos Mensuales Reales (<span id="gastos-usuario-titulo"></span>)</h2>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.8rem;">Solo se contemplan compras reales hechas por vos.</p>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.8rem;">Solo compras efectivas registradas por vos.</p>
         <div id="lista-gastos-mes"></div>
       </div>
     </section>
 
-    <!-- 5. CATÁLOGO GLOBAL -->
+    <!-- 5. CATÁLOGO GLOBAL UNIFICADO -->
     <section id="sec-catalogo" class="section">
       <div class="card">
-        <h2>📦✨ Base Global de Precios</h2>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom:0.5rem;">Incluye compras y precios de referencia vistos en góndola 🌸</p>
-        <input type="text" id="buscar-producto" placeholder="🔍 Buscar producto o verdura..." onkeyup="renderCatalogo()">
+        <h2>📦✨ Catálogo Unificado por Producto</h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom:0.5rem;">Muestra cada producto único y compara sus precios entre súper 🌸</p>
+        <input type="text" id="buscar-producto" placeholder="🔍 Buscar producto o verdura..." onkeyup="renderCatalogoUnificado()">
         <ul id="lista-catalogo" class="item-list"></ul>
       </div>
     </section>
@@ -432,18 +403,6 @@
       document.getElementById('gastos-usuario-titulo').innerText = perfilActual;
     }
 
-    function actualizarPlaceholderCantidad() {
-      const unidad = document.getElementById('prod-unidad').value;
-      const cantInput = document.getElementById('prod-cantidad');
-      if (unidad === 'gramos') {
-        cantInput.placeholder = 'Ej: 500';
-      } else if (unidad === 'kilos') {
-        cantInput.placeholder = 'Ej: 1.5';
-      } else {
-        cantInput.placeholder = 'Ej: 1';
-      }
-    }
-
     // Escuchar Firebase
     db.ref('compras').on('value', (snapshot) => {
       const data = snapshot.val();
@@ -454,7 +413,7 @@
         });
       }
       actualizarDataLists();
-      if (document.getElementById('sec-catalogo').classList.contains('active')) renderCatalogo();
+      if (document.getElementById('sec-catalogo').classList.contains('active')) renderCatalogoUnificado();
       if (document.getElementById('sec-gastos').classList.contains('active')) renderGastosPorMes();
     });
 
@@ -487,35 +446,22 @@
       btn.classList.add('active');
 
       if(secId === 'sec-optimizar') cargarSelectorOptimizacion();
-      if(secId === 'sec-catalogo') renderCatalogo();
+      if(secId === 'sec-catalogo') renderCatalogoUnificado();
       if(secId === 'sec-promos') renderPromos();
       if(secId === 'sec-gastos') renderGastosPorMes();
     }
 
-    // Guardar Registro (Compra o Referencia)
+    // Guardar Registro
     document.getElementById('form-compra').addEventListener('submit', (e) => {
       e.preventDefault();
       if (!perfilActual) return cambiarPerfilModal();
 
-      const tipoReg = document.getElementById('tipo-registro').value; // 'compra' o 'referencia'
+      const tipoReg = document.getElementById('tipo-registro').value;
       const unidad = document.getElementById('prod-unidad').value;
       const cantIngresada = parseFloat(document.getElementById('prod-cantidad').value) || 1;
       const precioTotal = parseFloat(document.getElementById('prod-precio').value);
 
-      let precioPorUnidadMedida = precioTotal;
-      let detalleCantidad = `${cantIngresada} u.`;
-
-      if (unidad === 'gramos') {
-        const kilosEquivalentes = cantIngresada / 1000;
-        precioPorUnidadMedida = precioTotal / kilosEquivalentes; // Precio por Kg
-        detalleCantidad = `${cantIngresada}gr ($${precioPorUnidadMedida.toFixed(2)}/kg)`;
-      } else if (unidad === 'kilos') {
-        precioPorUnidadMedida = precioTotal / cantIngresada; // Precio por Kg
-        detalleCantidad = `${cantIngresada}kg ($${precioPorUnidadMedida.toFixed(2)}/kg)`;
-      } else {
-        precioPorUnidadMedida = precioTotal / cantIngresada;
-        if(cantIngresada > 1) detalleCantidad = `${cantIngresada}u. ($${precioPorUnidadMedida.toFixed(2)} c/u)`;
-      }
+      const datosCalculados = calcularEstandar(unidad, cantIngresada, precioTotal);
 
       const registro = {
         usuario: perfilActual,
@@ -524,10 +470,10 @@
         fecha: document.getElementById('compra-fecha').value,
         producto: document.getElementById('prod-nombre').value.trim().toLowerCase(),
         precioTotal: precioTotal,
-        precioEstandar: precioPorUnidadMedida,
+        precioEstandar: datosCalculados.precioEstandar,
         unidad: unidad,
         cantidadOriginal: cantIngresada,
-        detalleCantidad: detalleCantidad
+        detalleCantidad: datosCalculados.detalleCantidad
       };
       
       db.ref('compras').push(registro);
@@ -538,6 +484,24 @@
       document.getElementById('prod-cantidad').value = '1';
       document.getElementById('prod-nombre').focus();
     });
+
+    function calcularEstandar(unidad, cant, precioTotal) {
+      let precioEstandar = precioTotal;
+      let detalle = `${cant} u.`;
+
+      if (unidad === 'gramos') {
+        const kilos = cant / 1000;
+        precioEstandar = precioTotal / kilos;
+        detalle = `${cant}gr ($${precioEstandar.toFixed(2)}/kg)`;
+      } else if (unidad === 'kilos') {
+        precioEstandar = precioTotal / cant;
+        detalle = `${cant}kg ($${precioEstandar.toFixed(2)}/kg)`;
+      } else {
+        precioEstandar = precioTotal / cant;
+        if(cant > 1) detalle = `${cant}u. ($${precioEstandar.toFixed(2)} c/u)`;
+      }
+      return { precioEstandar, detalleCantidad: detalle };
+    }
 
     // Guardar Promo
     document.getElementById('form-promo').addEventListener('submit', (e) => {
@@ -564,12 +528,14 @@
       globalPromos.filter(p => p.hasta >= hoy).forEach(p => {
         lista.innerHTML += `
           <li class="item-row">
-            <div>
-              <strong>🌸 ${p.super.toUpperCase()}</strong> (${diasSemana[p.dia]})<br>
-              <small>${p.pago} — <strong>${p.descuento}% OFF</strong> 💖</small><br>
-              <span class="badge-user">Por ${p.usuario}</span>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong>🌸 ${p.super.toUpperCase()}</strong> (${diasSemana[p.dia]})<br>
+                <small>${p.pago} — <strong>${p.descuento}% OFF</strong> 💖</small><br>
+                <span class="badge-user">Por ${p.usuario}</span>
+              </div>
+              <button class="btn-danger" style="width:auto; padding: 0.3rem 0.6rem; border-radius:10px;" onclick="borrarPromo('${p.id}')">❌</button>
             </div>
-            <button class="btn-danger" style="width:auto; padding: 0.3rem 0.6rem; border-radius:10px;" onclick="borrarPromo('${p.id}')">❌</button>
           </li>
         `;
       });
@@ -579,65 +545,115 @@
       if(confirm('¿Eliminar esta promo?')) db.ref('promos/' + id).remove();
     }
 
-    function renderCatalogo() {
+    // CATÁLOGO UNIFICADO CON COMPARATIVA ENTRE COMERCIOS
+    function renderCatalogoUnificado() {
       const lista = document.getElementById('lista-catalogo');
       const busqueda = document.getElementById('buscar-producto').value.toLowerCase();
       lista.innerHTML = '';
 
-      const filtrados = globalCompras.filter(c => c.producto.includes(busqueda));
+      // Agrupar por producto único
+      let mapaProductos = {};
 
-      filtrados.slice().reverse().forEach(c => {
-        const esRef = c.tipo === 'referencia';
-        const badgeTipo = esRef 
-          ? `<span class="badge-ref">👀 Referencia</span>` 
-          : `<span class="badge">🛍️ Compra</span>`;
+      globalCompras.forEach(c => {
+        if (!c.producto.includes(busqueda)) return;
+        if (!mapaProductos[c.producto]) mapaProductos[c.producto] = [];
+        mapaProductos[c.producto].push(c);
+      });
 
-        const precioMostrar = c.precioTotal || c.precio;
+      const nombresOrdenados = Object.keys(mapaProductos).sort();
+
+      if(nombresOrdenados.length === 0) {
+        lista.innerHTML = '<p style="color:var(--text-muted);">No hay productos guardados 🌷</p>';
+        return;
+      }
+
+      nombresOrdenados.forEach(nombreProd => {
+        const registros = mapaProductos[nombreProd];
+        
+        // Obtener el último precio registrado de cada súper para este producto
+        let superesMap = {};
+        registros.forEach(r => {
+          if (!superesMap[r.super] || new Date(r.fecha) >= new Date(superesMap[r.super].fecha)) {
+            superesMap[r.super] = r;
+          }
+        });
+
+        const listaSuperes = Object.values(superesMap).sort((a,b) => a.precioEstandar - b.precioEstandar);
+
+        let filasTabla = listaSuperes.map(item => `
+          <tr>
+            <td><strong>${item.super.toUpperCase()}</strong></td>
+            <td>$${item.precioEstandar.toFixed(2)} <small>(${item.unidad === 'unidades' ? 'unid' : 'kg'})</small></td>
+            <td><small>${item.fecha}</small></td>
+            <td>
+              <button class="btn-secondary" style="width:auto; padding:0.2rem 0.4rem; font-size:0.75rem;" onclick="abrirModalEditar('${item.id}')">✏️</button>
+              <button class="btn-danger" style="width:auto; padding:0.2rem 0.4rem; font-size:0.75rem;" onclick="borrarRegistro('${item.id}')">🗑️</button>
+            </td>
+          </tr>
+        `).join('');
 
         lista.innerHTML += `
           <li class="item-row">
-            <div>
-              <strong>✨ ${c.producto}</strong> <span class="badge">${c.super}</span> ${badgeTipo}<br>
-              <small>Pagado/Visto: <strong>$${precioMostrar.toFixed(2)}</strong> (${c.detalleCantidad || '1u'})</small><br>
-              <small style="color:var(--text-muted);">${c.fecha}</small> — <span class="badge-user">Por ${c.usuario}</span>
-            </div>
-            <div style="display:flex; gap:0.3rem;">
-              <button class="btn-secondary" style="width:auto; padding:0.3rem 0.5rem; border-radius:10px;" onclick="editarPrecio('${c.id}', ${precioMostrar}, '${c.producto}', '${c.super}', '${c.unidad}', ${c.cantidadOriginal || 1})">✏️</button>
-              <button class="btn-danger" style="width:auto; padding:0.3rem 0.5rem; border-radius:10px;" onclick="borrarRegistro('${c.id}')">🗑️</button>
-            </div>
+            <strong style="font-size:1.05rem; color:var(--primary-dark);">✨ ${nombreProd.toUpperCase()}</strong>
+            <table class="price-table">
+              <thead>
+                <tr><th>Comercio</th><th>Precio Estándar</th><th>Fecha</th><th>Acción</th></tr>
+              </thead>
+              <tbody>
+                ${filasTabla}
+              </tbody>
+            </table>
           </li>
         `;
       });
     }
 
-    // Función de Edición de Precio
-    function editarPrecio(id, precioActual, prod, superNombre, unidad, cantOriginal) {
-      const nuevoPrecio = prompt(`Nuevo precio TOTAL para ${prod} en ${superNombre}:`, precioActual);
-      if(nuevoPrecio && !isNaN(nuevoPrecio)) {
-        const precioNuevoNum = parseFloat(nuevoPrecio);
-        let nuevoPrecioEstandar = precioNuevoNum;
-        let nuevoDetalle = `${cantOriginal} u.`;
+    // ABRIR Y GUARDAR EDICIÓN COMPLETA
+    function abrirModalEditar(id) {
+      const reg = globalCompras.find(c => c.id === id);
+      if(!reg) return;
 
-        if (unidad === 'gramos') {
-          const kilos = cantOriginal / 1000;
-          nuevoPrecioEstandar = precioNuevoNum / kilos;
-          nuevoDetalle = `${cantOriginal}gr ($${nuevoPrecioEstandar.toFixed(2)}/kg)`;
-        } else if (unidad === 'kilos') {
-          nuevoPrecioEstandar = precioNuevoNum / cantOriginal;
-          nuevoDetalle = `${cantOriginal}kg ($${nuevoPrecioEstandar.toFixed(2)}/kg)`;
-        } else {
-          nuevoPrecioEstandar = precioNuevoNum / cantOriginal;
-          if(cantOriginal > 1) nuevoDetalle = `${cantOriginal}u. ($${nuevoPrecioEstandar.toFixed(2)} c/u)`;
-        }
+      document.getElementById('edit-id').value = reg.id;
+      document.getElementById('edit-tipo').value = reg.tipo || 'compra';
+      document.getElementById('edit-super').value = reg.super;
+      document.getElementById('edit-producto').value = reg.producto;
+      document.getElementById('edit-unidad').value = reg.unidad || 'unidades';
+      document.getElementById('edit-cantidad').value = reg.cantidadOriginal || 1;
+      document.getElementById('edit-precio').value = reg.precioTotal || reg.precio;
 
-        db.ref('compras/' + id).update({
-          precioTotal: precioNuevoNum,
-          precio: precioNuevoNum,
-          precioEstandar: nuevoPrecioEstandar,
-          detalleCantidad: nuevoDetalle,
-          fecha: new Date().toISOString().substring(0, 10)
-        });
-      }
+      document.getElementById('modal-editar').style.display = 'flex';
+    }
+
+    function cerrarModalEditar() {
+      document.getElementById('modal-editar').style.display = 'none';
+    }
+
+    function guardarEdicionCompleta() {
+      const id = document.getElementById('edit-id').value;
+      const tipo = document.getElementById('edit-tipo').value;
+      const superNombre = document.getElementById('edit-super').value.trim().toLowerCase();
+      const producto = document.getElementById('edit-producto').value.trim().toLowerCase();
+      const unidad = document.getElementById('edit-unidad').value;
+      const cant = parseFloat(document.getElementById('edit-cantidad').value);
+      const precioTotal = parseFloat(document.getElementById('edit-precio').value);
+
+      const datosCalc = calcularEstandar(unidad, cant, precioTotal);
+
+      db.ref('compras/' + id).update({
+        tipo: tipo,
+        super: superNombre,
+        producto: producto,
+        unidad: unidad,
+        cantidadOriginal: cant,
+        precioTotal: precioTotal,
+        precio: precioTotal,
+        precioEstandar: datosCalc.precioEstandar,
+        detalleCantidad: datosCalc.detalleCantidad,
+        fecha: new Date().toISOString().substring(0, 10)
+      });
+
+      cerrarModalEditar();
+      alert('¡Producto actualizado! 🌸');
     }
 
     function borrarRegistro(id) {
@@ -682,46 +698,38 @@
       const contenedor = document.getElementById('lista-seleccion-productos');
       contenedor.innerHTML = '';
       
-      const productosUnicos = [...new Set(globalCompras.map(c => c.producto))];
+      const productosUnicos = [...new Set(globalCompras.map(c => c.producto))].sort();
 
       if(productosUnicos.length === 0) {
-        contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay productos o verduras registradas aún 🌷</p>';
+        contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay productos registrados aún 🌷</p>';
         return;
       }
 
       productosUnicos.forEach(prod => {
         contenedor.innerHTML += `
-          <label style="display:flex; align-items:center; gap:0.6rem; margin-top:0.5rem; font-weight:normal; color:var(--text);">
-            <input type="checkbox" value="${prod}" class="chk-prod" style="width:auto;"> ✨ ${prod}
+          <label style="display:flex; align-items:center; gap:0.6rem; margin-top:0.4rem; font-weight:normal; color:var(--text);">
+            <input type="checkbox" value="${prod}" class="chk-prod" style="width:auto;"> ✨ ${prod.toUpperCase()}
           </label>
         `;
       });
     }
 
+    // PLANIFICADOR DE COMPRAS CON PROMOS Y DÍAS DE LA SEMANA
     function calcularMejorOpcion() {
       const seleccionados = Array.from(document.querySelectorAll('.chk-prod:checked')).map(cb => cb.value);
       if(seleccionados.length === 0) return alert('Seleccioná al menos un producto o verdura 🌸');
 
-      const hoy = new Date();
-      const diaHoy = hoy.getDay();
-      const fechaHoyStr = hoy.toISOString().substring(0, 10);
+      const diaSeleccionado = document.getElementById('plan-dia-semana').value; // 'auto' o '0'..'6'
+      const hoyStr = new Date().toISOString().substring(0, 10);
+      const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
-      const promosHoy = globalPromos.filter(p => p.dia === diaHoy && p.hasta >= fechaHoyStr);
-
-      let opciones = {};
-
-      seleccionados.forEach(prod => {
-        const registros = globalCompras.filter(c => c.producto === prod);
-        registros.forEach(reg => {
-          if(!opciones[reg.super]) opciones[reg.super] = { totalBase: 0, faltantes: 0, items: [] };
-        });
-      });
-
+      const superesUnicos = [...new Set(globalCompras.map(c => c.super))];
       let resultados = [];
 
-      for (let superNombre in opciones) {
-        let total = 0;
-        let count = 0;
+      superesUnicos.forEach(superNombre => {
+        let totalBase = 0;
+        let cubiertos = 0;
+        let faltantesNombres = [];
 
         seleccionados.forEach(prod => {
           const reg = globalCompras
@@ -729,44 +737,80 @@
             .sort((a,b) => new Date(b.fecha) - new Date(a.fecha))[0];
 
           if(reg) {
-            const precioEstandar = reg.precioEstandar || (reg.cantidadOriginal ? (reg.precioTotal || reg.precio)/reg.cantidadOriginal : reg.precio);
-            total += precioEstandar;
-            count++;
+            totalBase += reg.precioEstandar;
+            cubiertos++;
+          } else {
+            faltantesNombres.push(prod);
           }
         });
 
-        const promoSuper = promosHoy.find(p => p.super === superNombre);
-        let totalConDescuento = total;
-        let infoPromo = "Sin promo hoy 🌸";
+        // Buscar mejor promo
+        let descuentoAplicado = 0;
+        let detallePromo = "Sin promo registrada";
+        let diaRecomendadoStr = "";
 
-        if(promoSuper) {
-          totalConDescuento = total * (1 - promoSuper.descuento / 100);
-          infoPromo = `${promoSuper.descuento}% OFF pagando con ${promoSuper.pago} 💖`;
+        if (diaSeleccionado === 'auto') {
+          // Buscar la mayor promo disponible cualquier día de la semana
+          const promosSuper = globalPromos.filter(p => p.super === superNombre && p.hasta >= hoyStr);
+          if (promosSuper.length > 0) {
+            promosSuper.sort((a,b) => b.descuento - a.descuento);
+            const mejorP = promosSuper[0];
+            descuentoAplicado = mejorP.descuento;
+            detallePromo = `${mejorP.descuento}% OFF el ${diasSemana[mejorP.dia]} (${mejorP.pago})`;
+            diaRecomendadoStr = `Ir el ${diasSemana[mejorP.dia]}`;
+          }
+        } else {
+          // Filtrar promo específica para el día elegido
+          const numDia = parseInt(diaSeleccionado);
+          const promoDificil = globalPromos.find(p => p.super === superNombre && p.dia === numDia && p.hasta >= hoyStr);
+          if (promoDificil) {
+            descuentoAplicado = promoDificil.descuento;
+            detallePromo = `${promoDificil.descuento}% OFF con ${promoDificil.pago}`;
+          }
+          diaRecomendadoStr = `Comprando el ${diasSemana[numDia]}`;
         }
+
+        const totalFinal = totalBase * (1 - descuentoAplicado / 100);
 
         resultados.push({
           super: superNombre,
-          totalOriginal: total,
-          totalFinal: totalConDescuento,
-          cubiertos: count,
-          promocion: infoPromo
+          totalBase: totalBase,
+          totalFinal: totalFinal,
+          cubiertos: cubiertos,
+          faltantes: faltantesNombres,
+          promoTxt: detallePromo,
+          diaTxt: diaRecomendadoStr
         });
-      }
+      });
 
-      resultados.sort((a,b) => a.totalFinal - b.totalFinal);
+      // Ordenar: Primero los que tienen más productos cubiertos, luego los más baratos
+      resultados.sort((a,b) => (b.cubiertos - a.cubiertos) || (a.totalFinal - b.totalFinal));
 
       const divRes = document.getElementById('detalle-resultado');
       divRes.innerHTML = '';
 
       resultados.forEach((r, idx) => {
+        let textoFaltantes = r.faltantes.length > 0 
+          ? `<p class="badge-alert" style="margin-top:0.3rem;">⚠️ Falta precio de: ${r.faltantes.join(', ')}</p>` 
+          : `<span class="badge" style="background:#bbf7d0; color:#166534;">✅ Lista Completa</span>`;
+
         divRes.innerHTML += `
-          <div style="border-bottom: 1px dashed #f0abfc; padding: 0.6rem 0;">
-            <p style="font-weight:bold; color:${idx===0?'#ec4899':'#581c87'}">
-              ${idx === 0 ? '🏆 Mejor Opción: ' : '🌸 '}${r.super.toUpperCase()}
+          <div style="border-bottom: 2px dashed #f0abfc; padding: 0.8rem 0;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <p style="font-weight:bold; font-size:1.1rem; color:${idx===0?'#ec4899':'#581c87'}">
+                ${idx === 0 ? '🏆 ' : '🌸 '}${r.super.toUpperCase()}
+              </p>
+              ${textoFaltantes}
+            </div>
+
+            <p style="margin-top:0.4rem; font-size:1rem;">
+              Total Estimado: <strong style="color:var(--primary-dark); font-size:1.15rem;">$${r.totalFinal.toFixed(2)}</strong> 
+              ${r.totalBase !== r.totalFinal ? `<small style="color:var(--text-muted); text-decoration:line-through;">($${r.totalBase.toFixed(2)})</small>` : ''}
             </p>
-            <p style="margin-top:0.2rem;">Total Estándar (1u o 1Kg c/u): <strong>$${r.totalFinal.toFixed(2)}</strong> <small style="color:var(--text-muted);">(Base: $${r.totalOriginal.toFixed(2)})</small></p>
-            <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.1rem;">Promo: ${r.promocion}</p>
-            <p style="font-size:0.8rem; color:var(--text-muted);">Tiene ${r.cubiertos} de ${seleccionados.length} elementos seleccionados.</p>
+
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.2rem;">🎁 Promo: ${r.promoTxt}</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">🗓️ ${r.diaTxt || 'Cualquier día'}</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Tiene ${r.cubiertos} de ${seleccionados.length} productos seleccionados.</p>
           </div>
         `;
       });
