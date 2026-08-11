@@ -712,146 +712,197 @@
     }
 
     // PLANIFICADOR DE COMPRAS CON PROMOS Y DÍAS DE LA SEMANA
-    function calcularMejorOpcion() {
-      const seleccionados = Array.from(document.querySelectorAll('.chk-prod:checked')).map(cb => cb.value);
-      if(seleccionados.length === 0) return alert('Seleccioná al menos un producto o verdura 🌸');
+    // PLANIFICADOR DE COMPRAS CORREGIDO Y MEJORADO
+function calcularMejorOpcion() {
+  const seleccionados = Array.from(document.querySelectorAll('.chk-prod:checked')).map(cb => cb.value);
+  if(seleccionados.length === 0) return alert('Seleccioná al menos un producto o verdura 🌸');
 
-      const diaSeleccionado = document.getElementById('plan-dia-semana').value;
-      const hoyStr = new Date().toISOString().substring(0, 10);
-      const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+  const diaSeleccionado = document.getElementById('plan-dia-semana').value;
+  const hoyStr = new Date().toISOString().substring(0, 10);
+  const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
-      const superesUnicos = [...new Set(globalCompras.map(c => c.super))];
-      let resultados = [];
+  const superesUnicos = [...new Set(globalCompras.map(c => c.super))];
+  let resultados = [];
 
-      superesUnicos.forEach(superNombre => {
-        let totalBase = 0;
-        let cubiertos = 0;
-        let faltantesNombres = [];
+  // Helper para obtener precio estándar válido (evita NaN)
+  const getPrecioEstandar = (reg) => {
+    if (!reg) return 0;
+    const pEst = parseFloat(reg.precioEstandar);
+    if (!isNaN(pEst) && pEst > 0) return pEst;
+    const pTot = parseFloat(reg.precioTotal) || parseFloat(reg.precio);
+    const cant = parseFloat(reg.cantidadOriginal) || 1;
+    return !isNaN(pTot) ? pTot / cant : 0;
+  };
 
-        seleccionados.forEach(prod => {
-          const reg = globalCompras
-            .filter(c => c.producto === prod && c.super === superNombre)
-            .sort((a,b) => new Date(b.fecha) - new Date(a.fecha))[0];
+  // Helper para obtener el precio global promedio/referencia de un producto
+  const getPrecioReferenciaGlobal = (prodNombre) => {
+    const regs = globalCompras.filter(c => c.producto === prodNombre);
+    if (regs.length === 0) return 0;
+    const suma = regs.reduce((acc, curr) => acc + getPrecioEstandar(curr), 0);
+    return suma / regs.length;
+  };
 
-          if(reg) {
-            totalBase += reg.precioEstandar;
-            cubiertos++;
-          } else {
-            faltantesNombres.push(prod);
-          }
-        });
+  superesUnicos.forEach(superNombre => {
+    let totalBase = 0;
+    let totalEstimadoConFaltantes = 0;
+    let cubiertos = 0;
+    let faltantesNombres = [];
 
-        // Buscar mejor promo
-        let descuentoAplicado = 0;
-        let detallePromo = "Sin promo registrada";
-        let diaRecomendadoStr = "";
+    seleccionados.forEach(prod => {
+      const reg = globalCompras
+        .filter(c => c.producto === prod && c.super === superNombre)
+        .sort((a,b) => new Date(b.fecha) - new Date(a.fecha))[0];
 
-        if (diaSeleccionado === 'auto') {
-          const promosSuper = globalPromos.filter(p => p.super === superNombre && p.hasta >= hoyStr);
-          if (promosSuper.length > 0) {
-            promosSuper.sort((a,b) => b.descuento - a.descuento);
-            const mejorP = promosSuper[0];
-            descuentoAplicado = mejorP.descuento;
-            detallePromo = `${mejorP.descuento}% OFF el ${diasSemana[mejorP.dia]} (${mejorP.pago})`;
-            diaRecomendadoStr = `Ir el ${diasSemana[mejorP.dia]}`;
-          }
-        } else {
-          const numDia = parseInt(diaSeleccionado);
-          const promoDificil = globalPromos.find(p => p.super === superNombre && p.dia === numDia && p.hasta >= hoyStr);
-          if (promoDificil) {
-            descuentoAplicado = promoDificil.descuento;
-            detallePromo = `${promoDificil.descuento}% OFF con ${promoDificil.pago}`;
-          }
-          diaRecomendadoStr = `Comprando el ${diasSemana[numDia]}`;
-        }
+      if(reg) {
+        const precio = getPrecioEstandar(reg);
+        totalBase += precio;
+        totalEstimadoConFaltantes += precio;
+        cubiertos++;
+      } else {
+        faltantesNombres.push(prod);
+        // Si falta en este súper, usamos el precio de referencia para la estimación total
+        totalEstimadoConFaltantes += getPrecioReferenciaGlobal(prod);
+      }
+    });
 
-        const totalFinal = totalBase * (1 - descuentoAplicado / 100);
+    // Buscar descuento/promo vigente
+    let descuentoAplicado = 0;
+    let detallePromo = "Sin promo registrada";
+    let diaRecomendadoStr = "";
 
-        resultados.push({
-          super: superNombre,
-          totalBase: totalBase,
-          totalFinal: totalFinal,
-          cubiertos: cubiertos,
-          faltantes: faltantesNombres,
-          promoTxt: detallePromo,
-          diaTxt: diaRecomendadoStr
-        });
-      });
+    if (diaSeleccionado === 'auto') {
+      const promosSuper = globalPromos.filter(p => p.super === superNombre && p.hasta >= hoyStr);
+      if (promosSuper.length > 0) {
+        promosSuper.sort((a,b) => (parseFloat(b.descuento) || 0) - (parseFloat(a.descuento) || 0));
+        const mejorP = promosSuper[0];
+        descuentoAplicado = parseFloat(mejorP.descuento) || 0;
+        detallePromo = `${descuentoAplicado}% OFF el ${diasSemana[mejorP.dia]} (${mejorP.pago})`;
+        diaRecomendadoStr = `Ir el ${diasSemana[mejorP.dia]}`;
+      }
+    } else {
+      const numDia = parseInt(diaSeleccionado);
+      const promoDificil = globalPromos.find(p => p.super === superNombre && p.dia === numDia && p.hasta >= hoyStr);
+      if (promoDificil) {
+        descuentoAplicado = parseFloat(promoDificil.descuento) || 0;
+        detallePromo = `${descuentoAplicado}% OFF con ${promoDificil.pago}`;
+      }
+      diaRecomendadoStr = `Comprando el ${diasSemana[numDia]}`;
+    }
 
-      // Ordenar por productos cubiertos y luego por precio más bajo
-      resultados.sort((a,b) => (b.cubiertos - a.cubiertos) || (a.totalFinal - b.totalFinal));
+    const totalFinal = totalBase * (1 - descuentoAplicado / 100);
+    const totalEstimadoFinal = totalEstimadoConFaltantes * (1 - descuentoAplicado / 100);
 
-      const divRes = document.getElementById('detalle-resultado');
-      divRes.innerHTML = '';
+    resultados.push({
+      super: superNombre,
+      totalBase: totalBase,
+      totalFinal: totalFinal,
+      totalEstimadoFinal: totalEstimadoFinal,
+      cubiertos: cubiertos,
+      faltantes: faltantesNombres,
+      promoTxt: detallePromo,
+      diaTxt: diaRecomendadoStr
+    });
+  });
 
-      // --- CANASTA COMBINADA (MULTI-SÚPER) ---
-      let totalCombinado = 0;
-      let detalleCombinado = [];
+  // Ordenar primero por más productos cubiertos y luego por menor precio final
+  resultados.sort((a,b) => (b.cubiertos - a.cubiertos) || (a.totalFinal - b.totalFinal));
 
-      seleccionados.forEach(prod => {
-        let mejorReg = null;
-        let mejorPrecioConPromo = Infinity;
+  const divRes = document.getElementById('detalle-resultado');
+  divRes.innerHTML = '';
 
-        globalCompras.filter(c => c.producto === prod).forEach(reg => {
-          let desc = 0;
-          if (diaSeleccionado === 'auto') {
-            const pSuper = globalPromos.filter(p => p.super === reg.super && p.hasta >= hoyStr);
-            if (pSuper.length > 0) desc = Math.max(...pSuper.map(p => p.descuento));
-          } else {
-            const numDia = parseInt(diaSeleccionado);
-            const pSuper = globalPromos.find(p => p.super === reg.super && p.dia === numDia && p.hasta >= hoyStr);
-            if (pSuper) desc = pSuper.descuento;
-          }
+  // --- CANASTA COMBINADA (MULTI-SÚPER) ---
+  let totalCombinado = 0;
+  let detalleCombinado = [];
 
-          const precioFinalProd = reg.precioEstandar * (1 - desc / 100);
-          if (precioFinalProd < mejorPrecioConPromo) {
-            mejorPrecioConPromo = precioFinalProd;
-            mejorReg = { ...reg, precioFinalProd };
-          }
-        });
+  seleccionados.forEach(prod => {
+    let mejorReg = null;
+    let mejorPrecioConPromo = Infinity;
 
-        if (mejorReg) {
-          totalCombinado += mejorReg.precioFinalProd;
-          detalleCombinado.push(`<li><strong>${prod.toUpperCase()}</strong>: en <em>${mejorReg.super.toUpperCase()}</em> ($${mejorReg.precioFinalProd.toFixed(2)})</li>`);
-        }
-      });
-
-      if (detalleCombinado.length > 0) {
-        divRes.innerHTML += `
-          <div class="card" style="border: 2px solid #a855f7; background: #faf5ff;">
-            <h3>🍓 Canasta Combinada (Comprando cada ítem donde esté más barato):</h3>
-            <p style="font-size:1.2rem; font-weight:bold; color:var(--primary-dark); margin:0.4rem 0;">Total Estimado: $${totalCombinado.toFixed(2)}</p>
-            <ul style="font-size:0.85rem; padding-left:1.2rem; margin-top:0.4rem; color:var(--text);">
-              ${detalleCombinado.join('')}
-            </ul>
-          </div>
-          <hr style="border:0; border-top:1px dashed var(--border); margin:1rem 0;">
-        `;
+    globalCompras.filter(c => c.producto === prod).forEach(reg => {
+      let desc = 0;
+      if (diaSeleccionado === 'auto') {
+        const pSuper = globalPromos.filter(p => p.super === reg.super && p.hasta >= hoyStr);
+        if (pSuper.length > 0) desc = Math.max(...pSuper.map(p => parseFloat(p.descuento) || 0));
+      } else {
+        const numDia = parseInt(diaSeleccionado);
+        const pSuper = globalPromos.find(p => p.super === reg.super && p.dia === numDia && p.hasta >= hoyStr);
+        if (pSuper) desc = parseFloat(pSuper.descuento) || 0;
       }
 
-      // --- RENDERIZAR MEJORES OPCIONES POR SÚPER UNIFICADO ---
-      resultados.forEach((r, idx) => {
-        let textoFaltantes = r.faltantes.length > 0 
-          ? `<p class="badge-alert">⚠️ Falta precio de: ${r.faltantes.join(', ')}</p>` 
-          : '<p class="badge" style="background:#bbf7d0; color:#15803d;">✅ ¡Tiene todos los productos!</p>';
+      const pEst = getPrecioEstandar(reg);
+      const precioFinalProd = pEst * (1 - desc / 100);
 
-        let esGanador = idx === 0 ? 'border: 2px solid #ec4899; background: #fff0f6;' : '';
+      if (precioFinalProd < mejorPrecioConPromo && precioFinalProd > 0) {
+        mejorPrecioConPromo = precioFinalProd;
+        mejorReg = { ...reg, precioFinalProd };
+      }
+    });
 
-        divRes.innerHTML += `
-          <div class="card" style="${esGanador} margin-bottom: 0.8rem; padding: 0.80rem;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <strong>${idx === 0 ? '👑 MEJOR SÚPER UNIFICADO' : '🏬'} ${r.super.toUpperCase()}</strong>
-              <span style="font-size: 1.1rem; font-weight: bold; color: var(--accent);">$${r.totalFinal.toFixed(2)}</span>
-            </div>
-            ${r.diaTxt ? `<p style="font-size:0.8rem; color:var(--primary-dark); margin-top:0.2rem;">🗓️ <strong>${r.diaTxt}</strong></p>` : ''}
-            <p style="font-size:0.8rem; color:var(--text-muted);">💳 Promo: ${r.promoTxt}</p>
-            ${r.totalBase !== r.totalFinal ? `<p style="font-size:0.75rem; color:#854d0e;">(Precio base sin descuento: $${r.totalBase.toFixed(2)})</p>` : ''}
-            <div style="margin-top:0.4rem;">${textoFaltantes}</div>
-          </div>
-        `;
-      });
+    if (mejorReg) {
+      totalCombinado += mejorReg.precioFinalProd;
+      detalleCombinado.push(`<li>✨ <strong>${prod.toUpperCase()}</strong>: en <em>${mejorReg.super.toUpperCase()}</em> ($${mejorReg.precioFinalProd.toFixed(2)})</li>`);
+    } else {
+      detalleCombinado.push(`<li>⚠️ <strong>${prod.toUpperCase()}</strong>: sin precio registrado en ningún súper</li>`);
+    }
+  });
 
-      document.getElementById('resultado-optimizacion').style.display = 'block';
+  if (detalleCombinado.length > 0) {
+    divRes.innerHTML += `
+      <div class="card" style="border: 2px solid #a855f7; background: #faf5ff;">
+        <h3>🍓 Canasta Combinada (Comprando cada ítem donde esté más barato):</h3>
+        <p style="font-size:1.2rem; font-weight:bold; color:var(--primary-dark); margin:0.4rem 0;">Total Combinado: $${totalCombinado.toFixed(2)}</p>
+        <ul style="font-size:0.85rem; padding-left:1.2rem; margin-top:0.4rem; color:var(--text); list-style:none;">
+          ${detalleCombinado.join('')}
+        </ul>
+      </div>
+      <hr style="border:0; border-top:1px dashed var(--border); margin:1rem 0;">
+    `;
+  }
+
+  // --- OPCIONES POR COMERCIO INDIVIDUAL ---
+  resultados.forEach((r, idx) => {
+    let textoFaltantes = '';
+
+    if (r.faltantes.length > 0) {
+      // Indicar en qué otros comercios SÍ están los faltantes
+      let dondeEstanDetalle = r.faltantes.map(prodFaltante => {
+        const opciones = globalCompras
+          .filter(c => c.producto === prodFaltante && c.super !== r.super)
+          .map(c => c.super.toUpperCase());
+        const unicosDonde = [...new Set(opciones)];
+        return unicosDonde.length > 0 
+          ? `<b>${prodFaltante.toUpperCase()}</b> (está en ${unicosDonde.join(', ')})`
+          : `<b>${prodFaltante.toUpperCase()}</b> (sin datos en ningún lado)`;
+      }).join('; ');
+
+      textoFaltantes = `
+        <div class="badge-alert" style="margin-top:0.5rem; padding:0.5rem; border-radius:10px; background:#fef3c7; color:#92400e;">
+          <p>⚠️ <strong>Faltan en ${r.super.toUpperCase()}:</strong> ${dondeEstanDetalle}</p>
+          <p style="margin-top:0.3rem; font-weight:bold; color:#b45309;">💡 Si todos estuvieran en ${r.super.toUpperCase()}, el total estimado sería: $${r.totalEstimadoFinal.toFixed(2)}</p>
+        </div>
+      `;
+    } else {
+      textoFaltantes = '<p class="badge" style="background:#bbf7d0; color:#15803d; margin-top:0.4rem; inline-block;">✅ ¡Tiene todos los productos seleccionados!</p>';
+    }
+
+    let esGanador = idx === 0 ? 'border: 2px solid #ec4899; background: #fff0f6;' : '';
+
+    divRes.innerHTML += `
+      <div class="card" style="${esGanador} margin-bottom: 0.8rem; padding: 0.85rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong>${idx === 0 ? '👑 MEJOR SÚPER UNIFICADO:' : '🏬'} ${r.super.toUpperCase()}</strong>
+          <span style="font-size: 1.15rem; font-weight: bold; color: var(--accent);">$${r.totalFinal.toFixed(2)}</span>
+        </div>
+        ${r.diaTxt ? `<p style="font-size:0.8rem; color:var(--primary-dark); margin-top:0.2rem;">🗓️ <strong>${r.diaTxt}</strong></p>` : ''}
+        <p style="font-size:0.8rem; color:var(--text-muted);">💳 Promo: ${r.promoTxt}</p>
+        ${r.totalBase !== r.totalFinal ? `<p style="font-size:0.75rem; color:#854d0e;">(Precio base sin descuento: $${r.totalBase.toFixed(2)})</p>` : ''}
+        ${textoFaltantes}
+      </div>
+    `;
+  });
+
+  document.getElementById('resultado-optimizacion').style.display = 'block';
+  }
     }
   </script>
 </body>
