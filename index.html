@@ -126,7 +126,6 @@
       box-shadow: 0 4px 10px rgba(192, 132, 252, 0.3);
     }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.4rem; }
 
     .nav-bar { 
@@ -386,7 +385,6 @@
     // =========================================================
     // CLAVES DE FIREBASE
     // =========================================================
-    
     const firebaseConfig = {
       apiKey: "AIzaSyDo8D0SNi93qxYiGUA7UieZTHgPEGrte1c",
       authDomain: "super-cute-46e06.firebaseapp.com",
@@ -396,7 +394,6 @@
       appId: "1:733637531361:web:5f793b8089aa8bf5b149a0",
       measurementId: "G-0ZZNC5YP8Z"
     }; 
-    
     // =========================================================
 
     firebase.initializeApp(firebaseConfig);
@@ -527,7 +524,7 @@
         fecha: document.getElementById('compra-fecha').value,
         producto: document.getElementById('prod-nombre').value.trim().toLowerCase(),
         precioTotal: precioTotal,
-        precioEstandar: precioPorUnidadMedida, // Siempre guardamos precio por Kg o por Unidad
+        precioEstandar: precioPorUnidadMedida,
         unidad: unidad,
         cantidadOriginal: cantIngresada,
         detalleCantidad: detalleCantidad
@@ -595,19 +592,52 @@
           ? `<span class="badge-ref">👀 Referencia</span>` 
           : `<span class="badge">🛍️ Compra</span>`;
 
+        const precioMostrar = c.precioTotal || c.precio;
+
         lista.innerHTML += `
           <li class="item-row">
             <div>
               <strong>✨ ${c.producto}</strong> <span class="badge">${c.super}</span> ${badgeTipo}<br>
-              <small>Pagado/Visto: <strong>$${(c.precioTotal || c.precio).toFixed(2)}</strong> (${c.detalleCantidad || '1u'})</small><br>
+              <small>Pagado/Visto: <strong>$${precioMostrar.toFixed(2)}</strong> (${c.detalleCantidad || '1u'})</small><br>
               <small style="color:var(--text-muted);">${c.fecha}</small> — <span class="badge-user">Por ${c.usuario}</span>
             </div>
             <div style="display:flex; gap:0.3rem;">
+              <button class="btn-secondary" style="width:auto; padding:0.3rem 0.5rem; border-radius:10px;" onclick="editarPrecio('${c.id}', ${precioMostrar}, '${c.producto}', '${c.super}', '${c.unidad}', ${c.cantidadOriginal || 1})">✏️</button>
               <button class="btn-danger" style="width:auto; padding:0.3rem 0.5rem; border-radius:10px;" onclick="borrarRegistro('${c.id}')">🗑️</button>
             </div>
           </li>
         `;
       });
+    }
+
+    // Función de Edición de Precio
+    function editarPrecio(id, precioActual, prod, superNombre, unidad, cantOriginal) {
+      const nuevoPrecio = prompt(`Nuevo precio TOTAL para ${prod} en ${superNombre}:`, precioActual);
+      if(nuevoPrecio && !isNaN(nuevoPrecio)) {
+        const precioNuevoNum = parseFloat(nuevoPrecio);
+        let nuevoPrecioEstandar = precioNuevoNum;
+        let nuevoDetalle = `${cantOriginal} u.`;
+
+        if (unidad === 'gramos') {
+          const kilos = cantOriginal / 1000;
+          nuevoPrecioEstandar = precioNuevoNum / kilos;
+          nuevoDetalle = `${cantOriginal}gr ($${nuevoPrecioEstandar.toFixed(2)}/kg)`;
+        } else if (unidad === 'kilos') {
+          nuevoPrecioEstandar = precioNuevoNum / cantOriginal;
+          nuevoDetalle = `${cantOriginal}kg ($${nuevoPrecioEstandar.toFixed(2)}/kg)`;
+        } else {
+          nuevoPrecioEstandar = precioNuevoNum / cantOriginal;
+          if(cantOriginal > 1) nuevoDetalle = `${cantOriginal}u. ($${nuevoPrecioEstandar.toFixed(2)} c/u)`;
+        }
+
+        db.ref('compras/' + id).update({
+          precioTotal: precioNuevoNum,
+          precio: precioNuevoNum,
+          precioEstandar: nuevoPrecioEstandar,
+          detalleCantidad: nuevoDetalle,
+          fecha: new Date().toISOString().substring(0, 10)
+        });
+      }
     }
 
     function borrarRegistro(id) {
@@ -618,7 +648,6 @@
       const contenedor = document.getElementById('lista-gastos-mes');
       contenedor.innerHTML = '';
 
-      // Filtramos SOLO compras reales hechas por el usuario (no las referencias vistas en góndola)
       const comprasRealesUsuario = globalCompras.filter(c => c.usuario === perfilActual && c.tipo !== 'referencia');
 
       if (comprasRealesUsuario.length === 0) {
@@ -695,14 +724,12 @@
         let count = 0;
 
         seleccionados.forEach(prod => {
-          // Buscamos el último registro en este super (sea compra o referencia)
           const reg = globalCompras
             .filter(c => c.producto === prod && c.super === superNombre)
             .sort((a,b) => new Date(b.fecha) - new Date(a.fecha))[0];
 
           if(reg) {
-            // Usamos siempre el precio estandarizado (por Kg o por Unidad)
-            const precioEstandar = reg.precioEstandar || (reg.cantidadOriginal ? reg.precioTotal/reg.cantidadOriginal : reg.precio);
+            const precioEstandar = reg.precioEstandar || (reg.cantidadOriginal ? (reg.precioTotal || reg.precio)/reg.cantidadOriginal : reg.precio);
             total += precioEstandar;
             count++;
           }
